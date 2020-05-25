@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import csv, os.path
 import datetime, os
 import pandas as pd
+import platform
 
 # 최종 종목 파싱 리스트
 stock_list = []
@@ -12,7 +13,7 @@ now = datetime.datetime.now()
 
 url = 'https://finance.naver.com/sise/sise_quant.nhn?sosok=1'
 html = urllib.request.urlopen(url).read()
-soup = BeautifulSoup(html, 'html.parser')
+soup = BeautifulSoup(html.decode('euc-kr', 'replace'), 'html.parser')
 
 # 거래량 1000만 이상 종목 파싱
 number = soup.find_all(class_='number')
@@ -45,7 +46,11 @@ for i in range(0, num_to_parse):
     stock_list.append(tmp)
 
 # CSV 파일 생성
-os.chdir('D:/PycharmProjects/volumechaser/StockData')
+if(platform.system() == 'Darwin'):
+    os.chdir('/Users/cocoret/PycharmProjects/volumechaser/StockData')
+else:
+    os.chdir('D:/PycharmProjects/volumechaser/StockData')
+
 
 f = open(now.strftime('%y.%m.%d') + '.csv', 'w', encoding='utf-8', newline='')
 csvWriter = csv.writer(f)
@@ -54,13 +59,15 @@ for i in stock_list:
     csvWriter.writerow(i)
 
 f.close()
-os.chdir('D:/PycharmProjects/volumechaser')
+
+if(platform.system() == 'Darwin'):
+    os.chdir('/Users/cocoret/PycharmProjects/volumechaser')
+else:
+    os.chdir('D:/PycharmProjects/volumechaser')
 
 # ----------------------------------------------------------------------#
 
 # 개별 종목 거래량 5일 간 추적 후 csv파일에 추가
-#D:\PycharmProjects\volumechaser\StockData\20.05.19.csv
-#path = f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
 
 a = 0
 for i in range(1, 5):
@@ -69,10 +76,19 @@ for i in range(1, 5):
         now_tmp1 = now_tmp1 + datetime.timedelta(days=-2)
         a = 2
     now_tmp = now_tmp1.strftime('%y.%m.%d')
-    path = f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
+
+    if (platform.system() == 'Darwin'):
+        path = f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
+    else:
+        path = f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
+
     if os.path.isfile(path):
-        csv_input = pd.read_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
-                                dtype={'코드': 'str'})
+        if (platform.system() == 'Darwin'):
+            csv_input = pd.read_csv(f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
+                                    dtype={'코드': 'str'})
+        else:
+            csv_input = pd.read_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
+                                    dtype={'코드': 'str'})
 
         rate_quant_tmp = []
         for x in range(0, len(csv_input['코드'])):
@@ -90,6 +106,11 @@ for i in range(1, 5):
 
         date = now.strftime('%y.%m.%d')
         csv_input[date] = rate_quant_tmp
-        csv_input.to_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
+
+        if (platform.system() == 'Darwin'):
+            csv_input.to_csv(f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
+        else:
+            csv_input.to_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
+
 
 
