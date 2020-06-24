@@ -49,8 +49,7 @@ for i in range(0, num_to_parse):
 if(platform.system() == 'Darwin'):
     os.chdir('/Users/cocoret/PycharmProjects/volumechaser/StockData')
 else:
-    os.chdir('D:/PycharmProjects/volumechaser/StockData')
-
+    os.chdir('C:/Users/jae34/PycharmProjects/volumechaser/StockData')
 
 f = open(now.strftime('%y.%m.%d') + '.csv', 'w', encoding='utf-8', newline='')
 csvWriter = csv.writer(f)
@@ -63,7 +62,7 @@ f.close()
 if(platform.system() == 'Darwin'):
     os.chdir('/Users/cocoret/PycharmProjects/volumechaser')
 else:
-    os.chdir('D:/PycharmProjects/volumechaser')
+    os.chdir('C:/Users/jae34/PycharmProjects/volumechaser')
 
 # ----------------------------------------------------------------------#
 
@@ -80,14 +79,14 @@ for i in range(1, 5):
     if (platform.system() == 'Darwin'):
         path = f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
     else:
-        path = f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
+        path = f'C:/Users/jae34/PycharmProjects/volumechaser/StockData/{now_tmp}.csv'
 
     if os.path.isfile(path):
         if (platform.system() == 'Darwin'):
             csv_input = pd.read_csv(f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
                                     dtype={'코드': 'str'})
         else:
-            csv_input = pd.read_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
+            csv_input = pd.read_csv(f'C:/Users/jae34/PycharmProjects/volumechaser/StockData/{now_tmp}.csv',
                                     dtype={'코드': 'str'})
 
         rate_quant_tmp = []
@@ -110,7 +109,7 @@ for i in range(1, 5):
         if (platform.system() == 'Darwin'):
             csv_input.to_csv(f'/Users/cocoret/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
         else:
-            csv_input.to_csv(f'D:/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
+            csv_input.to_csv(f'C:/Users/jae34/PycharmProjects/volumechaser/StockData/{now_tmp}.csv', index=False)
 
 
 
